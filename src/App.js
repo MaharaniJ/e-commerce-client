@@ -1,17 +1,31 @@
-import React from 'react'
-import Navbar from './componets/header/Navbar'
-import Newnav from './componets/newnav/Newnav'
-import './app.css'
-import Main from './componets/home/Main'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Home, NotFound } from './Components/default';
+import { Box } from '@mui/material'
+
+//components
+import Header from './Components/Header/Header';
+import DetailView from './Components/ItemDetails/DetailView';
+import TemplateProvider from './templates/TemplateProvider';
+import ContextProvider from './context/ContextProvider';
+import Cart from './Components/Cart/Cart';
 
 function App() {
   return (
-    <div>
-        <Navbar />
-        <Newnav />
-        <Main />
-    </div>
-  )
+    <TemplateProvider>
+      <ContextProvider>
+        <BrowserRouter>
+          <Header />
+          <Box style={{marginTop: 54}}>
+            <Routes>
+              <Route path= '/' element={<Home />} />
+              <Route path= '/cart' element={<Cart />} />
+              <Route path= '/product/:id' element={<DetailView />} />
+            </Routes>
+          </Box>
+        </BrowserRouter>
+      </ContextProvider>
+    </TemplateProvider>
+  );
 }
 
-export default App
+export default App;

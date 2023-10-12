@@ -1,42 +1,56 @@
-import React from "react";
-import Carousel from "react-material-ui-carousel";
-import "./banner.css";
 
-const data = [
-  "https://rukminim1.flixcart.com/flap/1680/280/image/1defb861e409319b.jpg?q=50",
-  " https://rukminim1.flixcart.com/flap/1680/280/image/685712c6cefb3c02.jpg?q=50",
-  "https://rukminim1.flixcart.com/flap/1680/280/image/8d4150cc4f3f967d.jpg?q=50",
-  "https://rukminim1.flixcart.com/flap/1680/280/image/685712c6cefb3c02.jpg?q=50",
-];
+import { styled } from '@mui/material';
 
-function Banner() {
-  return (
-    <Carousel
-      className="carasousel"
-      autoPlay={true}
-      animation="slide"
-      indicators={false}
-      navButtonsAlwaysVisible={true}
-      cycleNavigation={true}
-      navButtonsProps={{
-        style: {
-          backgroundColor: "#fff",
-          color: "#494949",
-          borderRadius: 0,
-          marginTop: -22,
-          height: "104px",
-        },
-      }}
-    >
-      {data.map((imag, i) => {
-        return (
-          <>
-            <img src={imag} alt="" className="banner_img" />
-          </>
-        );
-      })}
-    </Carousel>
-  );
+import { bannerData } from '../../constant/data';
+import Carousel from 'react-multi-carousel';
+
+const responsive = {
+    desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 1,
+    },
+    tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 1,
+    },
+    mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1,
+    }
+};
+
+const Image = styled('img')(({ theme }) => ({
+    width: '100%',
+    height: 280,
+    [theme.breakpoints.down('sm')]: {
+        objectFit: 'cover',
+        height: 180
+    }
+}));
+
+const Banner = () => {
+    return (
+        <Carousel
+            swipeable={false}
+            draggable={false}
+            responsive={responsive}
+            infinite={true}
+            autoPlay={true}
+            autoPlaySpeed={4000}
+            keyBoardControl={true}
+            showDots={false}
+            slidesToSlide={1}
+            containerClass="carousel-container"
+            dotListClass="custom-dot-list-style"
+            itemClass="carousel-item-padding-40-px"
+        >
+            {
+                bannerData.map(image => (
+                    <Image src={image.url} alt="banner" id={image.id} />
+                ))
+            }
+        </Carousel>
+    )
 }
 
 export default Banner;
