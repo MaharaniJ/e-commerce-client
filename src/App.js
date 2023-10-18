@@ -1,31 +1,27 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Home, NotFound } from './Components/default';
-import { Box } from '@mui/material'
-
-//components
-import Header from './Components/Header/Header';
-import DetailView from './Components/ItemDetails/DetailView';
-import TemplateProvider from './templates/TemplateProvider';
-import ContextProvider from './context/ContextProvider';
-import Cart from './Components/Cart/Cart';
+import Navbar from "./component/header/Navbar";
+import Main from "./component/home/Main";
+import Newnav from "./component/newnavbar/Newnav";
+import Footer from "./component/footer/Footer";
+import SignIn from "./component/signin_signup/SignIn";
+import SignUp from "./component/signin_signup/SignUp";
+import { Routes, Route } from "react-router-dom";
+import Cart from "./component/cart/Cart";
+import Buynow from "./component/buynow/Buynow";
 
 function App() {
   return (
-    <TemplateProvider>
-      <ContextProvider>
-        <BrowserRouter>
-          <Header />
-          <Box style={{marginTop: 54}}>
-            <Routes>
-              <Route path= '/' element={<Home />} />
-              <Route path= '/cart' element={<Cart />} />
-              <Route path= '/product/:id' element={<DetailView />} />
-            </Routes>
-          </Box>
-        </BrowserRouter>
-      </ContextProvider>
-    </TemplateProvider>
+    <>
+      <Navbar />
+      <Newnav />
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/register" element={<SignUp />} />
+        <Route path="/login" element={<SignIn />} />
+        <Route path="/product/:id" element={<Cart/>} />
+        <Route path="/buynow" element={<Buynow />}  />
+      </Routes>
+      <Footer />
+    </>
   );
 }
-
 export default App;

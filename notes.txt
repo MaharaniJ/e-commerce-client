@@ -1,0 +1,17 @@
+value={Data.fname}
+onChange={(e)=>setData({...Data,fname:e.target.value})}
+
+
+value={Data.email}
+onChange={(e)=>setData({...Data,email:e.target})}
+
+or
+const handleData = ((e)=>{
+    const {name,value} = e.target;
+    setData((prevData)=>{
+        return{
+            ...prevData,
+            [name]:value
+        }
+    })
+})
