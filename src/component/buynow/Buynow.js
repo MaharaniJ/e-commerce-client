@@ -50,10 +50,13 @@ function Buynow() {
             <p>Select all items</p>
             <span className="leftbuyprice">Price</span>
             <Divider />
-           
+
             <>
               <div className="item_containert">
-                <img  src="https://rukminim1.flixcart.com/image/300/300/kll7bm80/smartwatch/c/1/n/43-mo-sw-sense-500-android-ios-molife-original-imagyzyycnpujyjh.jpeg?q=70" alt="imgitem" />
+                <img
+                  src="https://rukminim1.flixcart.com/image/300/300/kll7bm80/smartwatch/c/1/n/43-mo-sw-sense-500-android-ios-molife-original-imagyzyycnpujyjh.jpeg?q=70"
+                  alt="imgitem"
+                />
                 <div className="item_details">
                   <h3>Molife Sense 500 Smartwatch (Black Strap, Freesize)</h3>
                   <h3>Smart Watches</h3>
@@ -70,7 +73,7 @@ function Buynow() {
               </div>
               <Divider />
             </>
-            
+
             <Subtotal />
           </div>
           <Right />
