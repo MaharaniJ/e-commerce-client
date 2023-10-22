@@ -1,19 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./navbar.css";
 import logo from "../../assets/amazon.png";
 import SearchIcon from "@mui/icons-material/Search";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import Avatar  from "@mui/material/Avatar";
+import Avatar from "@mui/material/Avatar";
 import { NavLink } from "react-router-dom";
+import { LoginContext } from "../../context/ContextProvider";
 
 function Navbar() {
+  const { account, setAccount } = useContext(LoginContext);
+
   return (
     <header>
       <nav>
         <div className="left">
           <div className="navlogo">
-           <NavLink to='/'><img alt="logo" src={logo} /></NavLink> 
+            <NavLink to="/">
+              <img alt="logo" src={logo} />
+            </NavLink>
           </div>
           <div className="nav_searchbaar">
             <input type="text" id="" name="" />
@@ -27,11 +32,12 @@ function Navbar() {
             <NavLink to="/login">signin</NavLink>
           </div>
           <div className="cart_btn">
-            <Badge badgeContent={4} color="secondary">
+            <Badge badgeContent={account?.carts?.length || 0} color="secondary">
               <ShoppingCartIcon id="icon" />
             </Badge>
             <p>Cart</p>
-          </div>
+          </div>{" "}
+          *
           <Avatar className="avtar" />
         </div>
       </nav>

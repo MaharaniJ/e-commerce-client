@@ -15,3 +15,52 @@ const handleData = ((e)=>{
         }
     })
 })
+
+
+
+
+export const getProducts = ()=> async(dispatch)=>{
+    try {
+        const data = await fetch("http://localhost:8000/getproducts",{
+            method:"GET",
+            headers:{
+               "Content-Type":"application/json"
+            }
+        });
+        const res = await data.json();
+        console.log(res);
+        dispatch({type:"SUCCESS_GET_PRODUCTS",payload:res});
+        
+    } catch (error) {
+        dispatch({type:"FAIL_GET_PRODUCTS",payload:error.response});
+    }
+}
+
+
+
+ {account ? (
+            <NavLink to="/buynow">
+              <div className="cart_btn">
+                <Badge badgeContent={account.carts?.length} color="secondary">
+                  {/* <i className="fas fa-shopping-cart" id="icon"></i> */}
+                  <ShoppingCartIcon id="icon" />
+                </Badge>
+
+                <p>Cart</p>
+              </div>
+            </NavLink>
+          ) : (
+            <NavLink to="/login">
+              <div className="cart_btn">
+                <Badge badgeContent={1} color="secondary">
+                  <ShoppingCartIcon id="icon" />
+                </Badge>
+                <p>Cart</p>
+              </div>
+            </NavLink>
+          )}
+          {account ? (
+            <Avatar className="avtar">{account.fname[0]?.toUpperCase()}</Avatar>
+          ) : (
+            <Avatar className="avtar" />
+          )}

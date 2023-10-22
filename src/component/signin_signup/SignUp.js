@@ -3,16 +3,18 @@ import blacklogo from "../../assets/blacklogo.png";
 import "./auth.css";
 import { Divider } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function SignUp() {
   const [userData, setUserData] = useState({
     fname: "",
     email: "",
-    number: "",
+    mobile: "",
     password: "",
     cpassword: "",
   });
-  console.log(userData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,6 +24,56 @@ function SignUp() {
     }));
   };
 
+  const sendData = async (e) => {
+    e.preventDefault();
+
+    // Client-side validation
+    const { fname, email, mobile, password, cpassword } = userData;
+    if (!fname || !email || !mobile || !password || !cpassword) {
+      toast.error("Please fill in all the required fields.", {
+        position: "top-right",
+        autoClose: 5000,
+      });
+      return; // Exit the function to prevent the API request
+    }
+
+    try {
+      const response = await axios.post("http://localhost:8000/register", {
+        fname,
+        email,
+        mobile,
+        password,
+        cpassword,
+      });
+      const data = response.data;
+
+      if (response.status === 422 || !data) {
+        toast.error("Invalid Details 👎!", {
+          position: "top-right",
+          autoClose: 5000,
+        });
+      } else {
+        setUserData({
+          ...userData,
+          fname: "",
+          email: "",
+          mobile: "",
+          password: "",
+          cpassword: "",
+        });
+        toast.success("Registration Successfully done 😃!", {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      console.error("Error sending data:", error);
+      toast.error("Registration failed. Please try again.", {
+        position: "top-right",
+        autoClose: 5000,
+      });
+    }
+  };
+
   return (
     <section>
       <div className="sign_container">
@@ -29,7 +81,7 @@ function SignUp() {
           <img src={blacklogo} alt="amazonlogo" />
         </div>
         <div className="sign_form">
-          <form>
+          <form method="POST">
             <h1>Sign-Up</h1>
             <div className="form_data">
               <label htmlFor="fname">Your name</label>
@@ -52,12 +104,12 @@ function SignUp() {
               />
             </div>
             <div className="form_data">
-              <label htmlFor="number">Mobile</label>
+              <label htmlFor="mobile">Mobile</label>
               <input
-                type="text"
-                name="number"
-                id="number"
-                value={userData.number}
+                type="number"
+                name="mobile"
+                id="mobile"
+                value={userData.mobile}
                 onChange={handleChange}
               />
             </div>
@@ -67,7 +119,7 @@ function SignUp() {
                 type="password"
                 name="password"
                 id="password"
-                placeholder="At least 6 char"
+                placeholder="At least 12 char"
                 value={userData.password}
                 onChange={handleChange}
               />
@@ -82,7 +134,9 @@ function SignUp() {
                 onChange={handleChange}
               />
             </div>
-            <button className="signin_btn">Continue</button>
+            <button className="signin_btn" onClick={sendData}>
+              Continue
+            </button>
             <Divider />
             <div className="signin_info">
               <p>Already have an account?</p>
@@ -90,6 +144,7 @@ function SignUp() {
             </div>
           </form>
         </div>
+        <ToastContainer />
       </div>
     </section>
   );
