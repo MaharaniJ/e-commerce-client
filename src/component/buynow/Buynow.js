@@ -1,85 +1,74 @@
 import { Divider } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./buynow.css";
 import Option from "./Option";
 import Subtotal from "./Subtotal";
 import Right from "./Right";
 import Empty from "./Empty";
+import axios from "axios";
 
 function Buynow() {
+  const [cartData, setCartdata] = useState([]);
+  const token = window.localStorage.getItem("app-token");
+
+  const getbuydata = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/cartdetails`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status !== 201) {
+        console.log("Error fetching data");
+      } else {
+        setCartdata(response.data.carts);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getbuydata();
+  }, []);
+
   return (
-    //     <div className="buynow_section">
-    //       <div className="buynow_container">
-    //         <div className="left_buy"></div>
-    //         <h1>Shopping Cart</h1>
-    //         <p>Select all items</p>
-    //         <span className="leftbuyprice">Price</span>
-    //         <Divider />
-    //         <div className="item_containert">
-    //           <img
-    //             src="https://rukminim1.flixcart.com/image/300/300/kll7bm80/smartwatch/c/1/n/43-mo-sw-sense-500-android-ios-molife-original-imagyzyycnpujyjh.jpeg?q=70"
-    //             alt=""
-    //           />
-    //           <div className="item_details">
-    //             <h3>Molife Sense 500 Smartwatch (Black Strap, Freesize)</h3>
-    //             <h3>Smart Watches</h3>
-    //             <h3 className="diffrentprice">₹5000.00</h3>
-    //             <h3 className="unusuall">Usually dispatched in 8 days.</h3>
-    //             <p>Eligible for FREE Shipping</p>
-    //             <img
-    //               src="https://m.media-amazon.com/images/G/31/marketing/fba/fba-badge_18px-2x._CB485942108_.png"
-    //               alt="logo"
-    //             />
-    //             <Option />
-    //           </div>
-    //           <h3 className="item_price">₹4949.00</h3>
-    //         </div>
-    //         <Divider />
-    //         <Subtotal />
-    //       </div>
-    //       <Right />
-    //     </div>
-    //   );
-    // }
-
     <>
-      <div className="buynow_section">
-        <div className="buynow_container">
-          <div className="left_buy">
-            <h1>Shopping Cart</h1>
-            <p>Select all items</p>
-            <span className="leftbuyprice">Price</span>
-            <Divider />
-
-            <>
-              <div className="item_containert">
-                <img
-                  src="https://rukminim1.flixcart.com/image/300/300/kll7bm80/smartwatch/c/1/n/43-mo-sw-sense-500-android-ios-molife-original-imagyzyycnpujyjh.jpeg?q=70"
-                  alt="imgitem"
-                />
-                <div className="item_details">
-                  <h3>Molife Sense 500 Smartwatch (Black Strap, Freesize)</h3>
-                  <h3>Smart Watches</h3>
-                  <h3 className="diffrentprice">₹4049.00</h3>
-                  <p className="unusuall">Usually dispatched in 8 days.</p>
-                  <p>Eligible for FREE Shipping</p>
-                  <img
-                    src="https://m.media-amazon.com/images/G/31/marketing/fba/fba-badge_18px-2x._CB485942108_.png"
-                    alt="logo"
-                  />
-                  <Option />
-                </div>
-                <h3 className="item_price">₹4049.00</h3>
-              </div>
+      {cartData.length > 0 ? ( // Check if cartData is an array with items
+        <div className="buynow_section">
+          <div className="buynow_container">
+            <div className="left_buy">
+              <h1>Shopping Cart</h1>
+              <p>Select all items</p>
+              <span className="leftbuyprice">Price</span>
               <Divider />
-            </>
+              {cartData.map((item, index) => (
+                <div className="item_containert" key={index}>
+                  <img src={item.detailUrl} alt="imgitem" />
+                  <div className="item_details">
+                    <h3>{item.title.longTitle}</h3>
+                    <h3>{item.title.shortTitle}</h3>
+                    <h3 className="diffrentprice">₹{item.price.cost}.00</h3>
+                    <p className="unusuall">Usually dispatched in 8 days.</p>
+                    <p>Eligible for FREE Shipping</p>
+                    <img
+                      src="https://m.media-amazon.com/images/G/31/marketing/fba/fba-badge_18px-2x._CB485942108_.png"
+                      alt="logo"
+                    />
+                    <Option deleteData={item.id} getData={getbuydata} />
+                  </div>
+                  <h3 className="item_price">₹{item.price.cost}.00</h3>
+                </div>
+              ))}
 
-            <Subtotal />
+              <Subtotal item={cartData} />
+            </div>
+            <Right item={cartData} />
           </div>
-          <Right />
         </div>
-      </div>{" "}
-      : <Empty />
+      ) : (
+        <Empty />
+      )}
     </>
   );
 }

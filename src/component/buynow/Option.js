@@ -1,7 +1,35 @@
-import React from "react";
-import './buynow.css'
+import React,{useEffect} from "react";
+import './buynow.css';
+import axios from "axios";
 
-function Option() {
+function Option({deleteData,get}) {
+
+  useEffect(() => {
+    removedata();
+  }, [deleteData]);
+
+  const token = window.localStorage.getItem("app-token");
+  const removedata = async (id)=>{
+    try{
+     const response = await axios.get(`http://localhost:8000/remove/${deleteData}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+     })
+     const data = await response.data;
+     console.log(data)
+     if(response === 400 || !data){
+      console.log("error in api")
+     }
+     else{
+      console.log("user Deleted")
+      get();
+     }
+    }
+    catch(error){
+
+    }
+  }
   return (
     <div className="add_remove_select">
       <select>

@@ -40,17 +40,23 @@ function Cart() {
   }, [id]);
 
   const addtocart = async (id) => {
+    const token = window.localStorage.getItem("app-token");
     // console.log(id);
     try {
       const checkresponse = await axios.post(
         `http://localhost:8000/addtocart/${id}`,
         getaData,
+
         {
           headers: {
-            // Accept: "application/json",
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-          withCredentials: true,
+
+          // headers: {
+          //   Accept: "application/json",
+          //   "Content-Type": "application/json",
+          // },
+          // withCredentials: true,
         }
       );
       const data1 = await checkresponse.data;
@@ -60,7 +66,7 @@ function Cart() {
         alert("user Invalid");
       } else {
         setAccount(data1);
-        history.push("/buynow");
+        history("/buynow");
         alert("data added in your cart");
       }
     } catch (error) {

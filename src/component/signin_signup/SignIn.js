@@ -14,10 +14,10 @@ function SignIn() {
   });
   console.log(logdata);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const {account,setAccount} = useContext(LoginContext)
-  console.log(account)
+  const { account, setAccount } = useContext(LoginContext);
+  console.log(account);
 
   const handleData = (e) => {
     // e.preventDefault();
@@ -30,39 +30,98 @@ function SignIn() {
     });
   };
 
+
   const sendData = async (e) => {
     e.preventDefault();
     const { email, password } = logdata;
+    const token = window.localStorage.getItem("app-token");
 
     try {
       const response = await axios.post("http://localhost:8000/login", {
         email,
         password,
-      });
-
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      );
+  
       const data = response.data;
-      console.log(data);
-     
-      if (response.status === 400 || !data) {
-        console.log("invalid details");
-        toast.error("Invalid Details 👎!", {
-            position: "top-center"
-        });
-    } else {
+      console.log("Server Response:", data); // Log the server response
+  
+      if (response.status === 200) {
+        console.log("Login successful. Token:", data.token); // Log the token
         setAccount(data);
-        setlogdata({ ...logdata, email: "", password: "" })
+        setlogdata({ ...logdata, email: "", password: "" });
         toast.success("Login Successfully done 😃!", {
-            position: "top-center"
+          position: "top-center",
         });
         setTimeout(() => {
-          navigate("/") // Navigate to the main page
-        }, 1000);
-       
-    }
+          navigate("/"); // Navigate to the main page
+        }, 3000);
+  
+        if (data.token) {
+          window.localStorage.setItem("app-token", data.token);
+          console.log("Token stored in local storage.");
+        }
+      }
     } catch (error) {
-      console.log("Error in sendData:", error);
+      if (error.response && error.response.status === 400) {
+        // Invalid email or password
+        toast.error("Invalid Email or password 👎!", {
+          position: "top-center",
+        });
+      } else {
+        // Handle other errors
+        console.log("Error in sendData:", error);
+      }
     }
   };
+  
+
+
+
+  // const sendData = async (e) => {
+  //   e.preventDefault();
+  //   const { email, password } = logdata;
+
+  //   try {
+  //     const response = await axios.post("http://localhost:8000/login", {
+  //       email,
+  //       password,
+  //     });
+
+  //     const data = response.data;
+  //     console.log(data);
+  //     console.log(data.token);
+
+  //     if (response.status === 200) {
+  //       // Login was successful
+  //       console.log("Login successful. Token:", data.token); 
+  //       setAccount(data);
+  //       setlogdata({ ...logdata, email: "", password: "" });
+  //       toast.success("Login Successfully done 😃!", {
+  //         position: "top-center",
+  //       });
+  //       setTimeout(() => {
+  //         navigate("/"); // Navigate to the main page
+  //       }, 3000);
+  //       window.localStorage.setItem("app-token",data.token);
+  //     }
+  //   } catch (error) {
+  //     if (error.response && error.response.status === 400) {
+  //       // Invalid email or password
+  //       toast.error("Invalid Email or password 👎!", {
+  //         position: "top-center",
+  //       });
+  //     } else {
+  //       // Handle other errors
+  //       console.log("Error in sendData:", error);
+  //     }
+  //   }
+  // };
 
   return (
     <section>

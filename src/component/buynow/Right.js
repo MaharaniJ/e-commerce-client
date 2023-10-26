@@ -1,9 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./buynow.css";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-function Right() {
+function Right({ item }) {
+  const [price, setPrice] = useState(0);
+
+  useEffect(() => {
+    totalAmount();
+  }, [item]);
+
+  const totalAmount = () => {
+    let price = 0;
+    item.map((item) => {
+      return (price += item.price.cost);
+    });
+    setPrice(price);
+  };
+
   const [val, setVal] = useState(false);
   return (
     <div className="right_buy">
@@ -18,7 +32,8 @@ function Right() {
           Select this option at checkout. Details
         </span>
         <h3>
-          Subtotal (1 items): <span style={{ fontWeight: 700 }}>₹4049.00</span>
+          Subtotal ({item.length} items):{" "}
+          <span style={{ fontWeight: 700 }}>₹{price}.00</span>
         </h3>
         <button className="rightbuy_btn">Process to Buy</button>
         <div className="emi" onClick={() => setVal(!val)}>

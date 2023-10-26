@@ -64,3 +64,217 @@ export const getProducts = ()=> async(dispatch)=>{
           ) : (
             <Avatar className="avtar" />
           )}
+
+
+
+cart:
+
+const Cart = () => {
+  const { account, setAccount } = useContext(LoginContext);
+  // console.log(account);
+
+  const { id } = useParams("");
+  // console.log(id);
+
+  const history = useNavigate();
+
+  const [inddata, setIndedata] = useState("");
+
+  // console.log([inddata]);
+
+  const getinddata = async () => {
+    try {
+      const res = await fetch(`http://localhost:8000/getproduct/${id}`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (res.status !== 201) {
+        alert("No data available");
+      } else {
+        const data = await res.json();
+        setIndedata(data);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error while fetching data");
+    }
+  };
+
+  useEffect(() => {
+    getinddata();
+  }, []);
+
+  const addtocart = async (id) => {
+    try {
+      const check = await fetch(`http://localhost:8000/addtocart/${id}`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          inddata,
+        }),
+        credentials: "include",
+      });
+
+      if (check.status !== 201) {
+        alert("No data available");
+      } else {
+        const data1 = await check.json();
+        setAccount(data1);
+        history.push("/buynow");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error while adding to the cart");
+    }
+  };
+
+  return (
+    <div className="cart_section">
+      {inddata && Object.keys(inddata).length && (
+        <div className="cart_container">
+          <div className="left_cart">
+            <img src={inddata.detailUrl} alt="cart" />
+            <div className="cart_btn">
+              <button
+                className="cart_btn1"
+                onClick={() => addtocart(inddata.id)}
+              >
+                Add to Cart
+              </button>
+              <button className="cart_btn2">Buy Now</button>
+            </div>
+          </div>
+          <div className="right_cart">
+            <h3>{inddata.title.shortTitle}</h3>
+            <h4>{inddata.title.longTitle}</h4>
+            <Divider />
+            <p className="mrp">
+              M.R.P. : <del>₹{inddata.price.mrp}</del>
+            </p>
+            <p>
+              Deal of the Day :{" "}
+              <span style={{ color: "#B12704" }}>₹{inddata.price.cost}.00</span>
+            </p>
+            <p>
+              You save :{" "}
+              <span style={{ color: "#B12704" }}>
+                {" "}
+                ₹{inddata.price.mrp - inddata.price.cost} (
+                {inddata.price.discount}){" "}
+              </span>
+            </p>
+
+            <div className="discount_box">
+              <h5>
+                Discount :{" "}
+                <span style={{ color: "#111" }}>{inddata.discount}</span>{" "}
+              </h5>
+              <h4>
+                FREE Delivery :{" "}
+                <span style={{ color: "#111", fontWeight: "600" }}>
+                  Oct 8 - 21
+                </span>{" "}
+                Details
+              </h4>
+              <p style={{ color: "#111" }}>
+                Fastest delivery:{" "}
+                <span style={{ color: "#111", fontWeight: "600" }}>
+                  {" "}
+                  Tomorrow 11AM
+                </span>
+              </p>
+            </div>
+            <p className="description">
+              About the Iteam :{" "}
+              <span
+                style={{
+                  color: "#565959",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  letterSpacing: "0.4px",
+                }}
+              >
+                {inddata.description}
+              </span>
+            </p>
+          </div>
+        </div>
+      )}
+
+      {!inddata ? (
+        <div className="circle">
+          <CircularProgress />
+          <h2> Loading....</h2>
+        </div>
+      ) : (
+        ""
+      )}
+    </div>
+  );
+};
+
+export default Cart;
+
+Login:
+
+      // if (response.status === 400 || !data) {
+      //   // console.log("invalid details");
+      //   toast.error("Invalid Email or password 👎!", {
+      //     position: "top-center",
+      //   });
+      // } else {
+      //   setAccount(data);
+      //   setlogdata({ ...logdata, email: "", password: "" });
+      //   toast.success("Login Successfully done 😃!", {
+      //     position: "top-center",
+      //   });
+      //   setTimeout(() => {
+      //     navigate("/"); // Navigate to the main page
+      //   }, 3000);
+      // }
+
+
+
+      ________________________________________________________________
+
+      //     <div className="buynow_section">
+    //       <div className="buynow_container">
+    //         <div className="left_buy"></div>
+    //         <h1>Shopping Cart</h1>
+    //         <p>Select all items</p>
+    //         <span className="leftbuyprice">Price</span>
+    //         <Divider />
+    //         <div className="item_containert">
+    //           <img
+    //             src="https://rukminim1.flixcart.com/image/300/300/kll7bm80/smartwatch/c/1/n/43-mo-sw-sense-500-android-ios-molife-original-imagyzyycnpujyjh.jpeg?q=70"
+    //             alt=""
+    //           />
+    //           <div className="item_details">
+    //             <h3>Molife Sense 500 Smartwatch (Black Strap, Freesize)</h3>
+    //             <h3>Smart Watches</h3>
+    //             <h3 className="diffrentprice">₹5000.00</h3>
+    //             <h3 className="unusuall">Usually dispatched in 8 days.</h3>
+    //             <p>Eligible for FREE Shipping</p>
+    //             <img
+    //               src="https://m.media-amazon.com/images/G/31/marketing/fba/fba-badge_18px-2x._CB485942108_.png"
+    //               alt="logo"
+    //             />
+    //             <Option />
+    //           </div>
+    //           <h3 className="item_price">₹4949.00</h3>
+    //         </div>
+    //         <Divider />
+    //         <Subtotal />
+    //       </div>
+    //       <Right />
+    //     </div>
+    //   );
+    // }
