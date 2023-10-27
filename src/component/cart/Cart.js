@@ -13,7 +13,8 @@ function Cart() {
   console.log("account: ", account);
   // console.log("account.carts: ", account.carts);
 
-  const [getaData, setGetaData] = useState([]);
+  const [getaData, setGetaData] = useState("");
+  console.log(getaData)
 
   const getdata = async () => {
     try {
@@ -52,11 +53,7 @@ function Cart() {
             Authorization: `Bearer ${token}`,
           },
 
-          // headers: {
-          //   Accept: "application/json",
-          //   "Content-Type": "application/json",
-          // },
-          // withCredentials: true,
+          
         }
       );
       const data1 = await checkresponse.data;

@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import blacklogo from "../../assets/blacklogo.png";
 import "./auth.css";
 import { Divider } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function SignUp() {
+  const navigate = useNavigate();
+
   const [userData, setUserData] = useState({
     fname: "",
     email: "",
@@ -32,7 +34,6 @@ function SignUp() {
     if (!fname || !email || !mobile || !password || !cpassword) {
       toast.error("Please fill in all the required fields.", {
         position: "top-right",
-        autoClose: 5000,
       });
       return; // Exit the function to prevent the API request
     }
@@ -50,7 +51,6 @@ function SignUp() {
       if (response.status === 422 || !data) {
         toast.error("Invalid Details 👎!", {
           position: "top-right",
-          autoClose: 5000,
         });
       } else {
         setUserData({
@@ -64,12 +64,14 @@ function SignUp() {
         toast.success("Registration Successfully done 😃!", {
           position: "top-center",
         });
+        setTimeout(() => {
+          navigate("/"); // Navigate to the main page
+        }, 1000);
       }
     } catch (error) {
       console.error("Error sending data:", error);
       toast.error("Registration failed. Please try again.", {
         position: "top-right",
-        autoClose: 5000,
       });
     }
   };

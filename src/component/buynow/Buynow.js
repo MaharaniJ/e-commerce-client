@@ -9,6 +9,7 @@ import axios from "axios";
 
 function Buynow() {
   const [cartData, setCartdata] = useState([]);
+  console.log(cartData);
   const token = window.localStorage.getItem("app-token");
 
   const getbuydata = async () => {
@@ -60,6 +61,7 @@ function Buynow() {
                   <h3 className="item_price">₹{item.price.cost}.00</h3>
                 </div>
               ))}
+              <Divider />
 
               <Subtotal item={cartData} />
             </div>

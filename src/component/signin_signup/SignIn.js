@@ -30,27 +30,28 @@ function SignIn() {
     });
   };
 
-
   const sendData = async (e) => {
     e.preventDefault();
     const { email, password } = logdata;
     const token = window.localStorage.getItem("app-token");
 
     try {
-      const response = await axios.post("http://localhost:8000/login", {
-        email,
-        password,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.post(
+        "http://localhost:8000/login",
+        {
+          email,
+          password,
         },
-      }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-  
+
       const data = response.data;
       console.log("Server Response:", data); // Log the server response
-  
+
       if (response.status === 200) {
         console.log("Login successful. Token:", data.token); // Log the token
         setAccount(data);
@@ -60,8 +61,8 @@ function SignIn() {
         });
         setTimeout(() => {
           navigate("/"); // Navigate to the main page
-        }, 3000);
-  
+        }, 1000);
+
         if (data.token) {
           window.localStorage.setItem("app-token", data.token);
           console.log("Token stored in local storage.");
@@ -75,13 +76,14 @@ function SignIn() {
         });
       } else {
         // Handle other errors
+
+        toast.error("Invalide user 👎!", {
+          position: "top-center",
+        });
         console.log("Error in sendData:", error);
       }
     }
   };
-  
-
-
 
   // const sendData = async (e) => {
   //   e.preventDefault();
@@ -99,7 +101,7 @@ function SignIn() {
 
   //     if (response.status === 200) {
   //       // Login was successful
-  //       console.log("Login successful. Token:", data.token); 
+  //       console.log("Login successful. Token:", data.token);
   //       setAccount(data);
   //       setlogdata({ ...logdata, email: "", password: "" });
   //       toast.success("Login Successfully done 😃!", {
