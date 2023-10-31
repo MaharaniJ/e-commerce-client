@@ -39,13 +39,16 @@ function SignUp() {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/register", {
-        fname,
-        email,
-        mobile,
-        password,
-        cpassword,
-      });
+      const response = await axios.post(
+        "https://ecommerce-w73k.onrender.com/register",
+        {
+          fname,
+          email,
+          mobile,
+          password,
+          cpassword,
+        }
+      );
       const data = response.data;
 
       if (response.status === 422 || !data) {

@@ -37,7 +37,7 @@ function SignIn() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/login",
+        "https://ecommerce-w73k.onrender.com/login",
         {
           email,
           password,
@@ -84,46 +84,6 @@ function SignIn() {
       }
     }
   };
-
-  // const sendData = async (e) => {
-  //   e.preventDefault();
-  //   const { email, password } = logdata;
-
-  //   try {
-  //     const response = await axios.post("http://localhost:8000/login", {
-  //       email,
-  //       password,
-  //     });
-
-  //     const data = response.data;
-  //     console.log(data);
-  //     console.log(data.token);
-
-  //     if (response.status === 200) {
-  //       // Login was successful
-  //       console.log("Login successful. Token:", data.token);
-  //       setAccount(data);
-  //       setlogdata({ ...logdata, email: "", password: "" });
-  //       toast.success("Login Successfully done 😃!", {
-  //         position: "top-center",
-  //       });
-  //       setTimeout(() => {
-  //         navigate("/"); // Navigate to the main page
-  //       }, 3000);
-  //       window.localStorage.setItem("app-token",data.token);
-  //     }
-  //   } catch (error) {
-  //     if (error.response && error.response.status === 400) {
-  //       // Invalid email or password
-  //       toast.error("Invalid Email or password 👎!", {
-  //         position: "top-center",
-  //       });
-  //     } else {
-  //       // Handle other errors
-  //       console.log("Error in sendData:", error);
-  //     }
-  //   }
-  // };
 
   return (
     <section>

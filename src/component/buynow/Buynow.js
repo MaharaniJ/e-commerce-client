@@ -14,7 +14,7 @@ function Buynow() {
 
   const getbuydata = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/cartdetails`, {
+      const response = await axios.get(`https://ecommerce-w73k.onrender.com/cartdetails`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

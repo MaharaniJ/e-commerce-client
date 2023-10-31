@@ -61,11 +61,14 @@ function Navbar() {
   const token = window.localStorage.getItem("app-token");
   const getvaliduser = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/validuser`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `https://ecommerce-w73k.onrender.com/validuser`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await response.data;
       console.log(data);
       if (response.status !== 200) {
@@ -93,11 +96,14 @@ function Navbar() {
       if (userConfirmed) {
         // User confirmed the logout
 
-        const res = await axios.get(`http://localhost:8000/logout`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await axios.get(
+          `https://ecommerce-w73k.onrender.com/logout`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = await res.data;
         console.log(data);

@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getProducts = () => async (dispatch) => {
   try {
-    const response = await axios.get("http://localhost:8000/getproducts", {
+    const response = await axios.get("https://ecommerce-w73k.onrender.com/getproducts", {
       headers: {
         "Content-Type": "application/json",
       },

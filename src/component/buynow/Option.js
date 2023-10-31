@@ -18,7 +18,7 @@ function Option({ deleteData, get }) {
   const removedata = async (id) => {
     if (window.confirm("Are you sure you want to delete this item?"))
       try {
-        const response = await axios.get(`http://localhost:8000/remove/${id}`, {
+        const response = await axios.get(`https://ecommerce-w73k.onrender.com/remove/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

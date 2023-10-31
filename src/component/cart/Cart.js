@@ -18,7 +18,7 @@ function Cart() {
 
   const getdata = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/getproduct/${id}`, {
+      const res = await axios.get(`https://ecommerce-w73k.onrender.com/getproduct/${id}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -45,7 +45,7 @@ function Cart() {
     // console.log(id);
     try {
       const checkresponse = await axios.post(
-        `http://localhost:8000/addtocart/${id}`,
+        `https://ecommerce-w73k.onrender.com/addtocart/${id}`,
         getaData,
 
         {
